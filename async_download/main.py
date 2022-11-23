@@ -27,7 +27,7 @@ async def worker(queue: asyncio.Queue, session: ClientSession, tmp_path: str, de
                     async for data in response.content.iter_chunked(CHUNK_SIZE):
                         await file.write(data)
         except (TimeoutError, ServerDisconnectedError, ConnectionResetError):
-            await queue.put(headers)
+            await queue.put(request_info)
 
         if delay:
             await asyncio.sleep(delay)
