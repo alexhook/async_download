@@ -1,15 +1,15 @@
 [tool.poetry]
-name = "async-download"
+name = "concurrent_requests"
 version = "0.1.0"
 description = ""
 authors = ["alex <qwertin2505@gmail.com>"]
 readme = "README.md"
-packages = [{include = "async_download"}]
+packages = [{include = "concurrent_requests"}]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-aiofiles = "^22.1.0"
-aiohttp = "^3.8.3"
+aiofiles = "22.1.0"
+aiohttp = "3.8.3"
 
 
 [tool.poetry.group.dev.dependencies]
