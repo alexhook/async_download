@@ -6,9 +6,8 @@ from typing import AnyStr, Optional
 import aiofiles
 from aiohttp import ClientSession
 
-from concurrent_requests.logging import ExceptionMessage
-from concurrent_requests.logging import LogMessage, logger
-from concurrent_requests.requests import BaseRequest, BaseFileRequest
+from concurrent_requests.logging import ExceptionMessage, LogMessage, logger
+from concurrent_requests.requests import BaseFileRequest, BaseRequest
 
 
 class BaseWorker(ABC):
