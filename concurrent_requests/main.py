@@ -65,3 +65,7 @@ class ConcurrentRequests:
                 response_content = json.loads(response_content)
             responses_json_content.append(response_content)
         return responses_json_content
+
+    def raise_for_status(self) -> None:
+        for request in self.requests:
+            request.raise_for_status()
