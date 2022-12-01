@@ -1,7 +1,7 @@
 import asyncio
 import os
 from abc import ABC, abstractmethod
-from typing import AnyStr, Optional
+from typing import Any, AnyStr, Optional
 
 import aiofiles
 from aiohttp import ClientSession
@@ -13,15 +13,22 @@ from concurrent_requests.requests import BaseFileRequest, BaseRequest
 class BaseWorker(ABC):
     __slots__ = (
         'session',
+        'queue',
         'max_attempts',
         'delay',
-        'queue',
     )
 
-    queue: asyncio.Queue
-
-    def __init__(self, session: ClientSession, max_attempts: int = 5, delay: float = 0) -> None:
+    def __init__(
+            self,
+            session: ClientSession,
+            queue: asyncio.Queue,
+            max_attempts: int,
+            delay: float,
+            *args: Any,
+            **kwargs: Any,
+    ) -> None:
         self.session = session
+        self.queue = queue
         self.max_attempts = max_attempts
         self.delay = delay
 
@@ -71,8 +78,16 @@ class BaseWorker(ABC):
 class MemoryWorker(BaseWorker):
     __slots__ = ()
 
-    def __init__(self, session: ClientSession, max_attempts: int = 5, delay: float = 0) -> None:
-        super().__init__(session, max_attempts=max_attempts, delay=delay)
+    def __init__(
+            self,
+            session: ClientSession,
+            queue: asyncio.Queue,
+            max_attempts: int,
+            delay: float,
+            *args: Any,
+            **kwargs: Any,
+    ) -> None:
+        super().__init__(session, queue, max_attempts, delay, *args, **kwargs)
 
     async def _request(self, request: BaseRequest) -> bytes:
         async with self.session.request(
@@ -89,8 +104,17 @@ class MemoryWorker(BaseWorker):
 class FileWorker(BaseWorker):
     __slots__ = ('path', )
 
-    def __init__(self, session: ClientSession, path: AnyStr, max_attempts: int = 5, delay: float = 0) -> None:
-        super().__init__(session, max_attempts=max_attempts, delay=delay)
+    def __init__(
+            self,
+            session: ClientSession,
+            queue: asyncio.Queue,
+            max_attempts: int,
+            delay: float,
+            path: AnyStr,
+            *args: Any,
+            **kwargs: Any,
+    ) -> None:
+        super().__init__(session, queue, max_attempts, delay, *args, **kwargs)
         self.path = path
 
     async def _request(self, request: BaseFileRequest) -> None:
