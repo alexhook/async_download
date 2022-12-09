@@ -12,7 +12,7 @@ class BaseRequest(ABC):
         'params',
         'headers',
         'kwargs',
-        'attempts',
+        '_attempts',
         '_exception',
         '_response_content',
     )
@@ -33,7 +33,7 @@ class BaseRequest(ABC):
         self.headers = headers
         self.kwargs = kwargs
 
-        self.attempts: int = 0
+        self._attempts: int = 0
         self._exception: Optional[Exception] = None
         self._response_content: Optional[bytes] = None
 

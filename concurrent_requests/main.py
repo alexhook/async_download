@@ -17,6 +17,7 @@ class ConcurrentRequests:
         'max_attempts',
         'delay',
         'worker_kwargs',
+        '_worker',
         '_workers',
         '_queue',
     )
@@ -41,9 +42,7 @@ class ConcurrentRequests:
 
         self._workers = []
         self._queue = asyncio.Queue()
-
-    async def run(self) -> None:
-        self.worker = self.worker(
+        self._worker = self.worker(
             session=self.session,
             queue=self._queue,
             max_attempts=self.max_attempts,
@@ -51,8 +50,9 @@ class ConcurrentRequests:
             **self.worker_kwargs,
         )
 
+    async def run(self) -> None:
         self._workers = [
-            asyncio.create_task(self.worker.run())
+            asyncio.create_task(self._worker.run())
             for _ in range(self.workers_count)
         ]
 

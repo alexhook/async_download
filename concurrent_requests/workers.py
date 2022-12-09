@@ -34,11 +34,11 @@ class BaseWorker(ABC):
     async def run(self) -> None:
         while True:
             request: BaseRequest = await self.queue.get()
-            request.attempts += 1
+            request._attempts += 1
             try:
                 response_content = await self._request(request=request)
             except Exception as exception:
-                if request.attempts < self.max_attempts:
+                if request._attempts < self.max_attempts:
                     await self.queue.put(request)
                     logger.info(LogMessage.retry.format(
                         method=request.__method__,
