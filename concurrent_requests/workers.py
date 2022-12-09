@@ -24,7 +24,6 @@ class BaseWorker(ABC):
             queue: asyncio.Queue,
             max_attempts: int,
             delay: float,
-            *args: Any,
             **kwargs: Any,
     ) -> None:
         self.session = session
@@ -84,10 +83,8 @@ class MemoryWorker(BaseWorker):
             queue: asyncio.Queue,
             max_attempts: int,
             delay: float,
-            *args: Any,
-            **kwargs: Any,
     ) -> None:
-        super().__init__(session, queue, max_attempts, delay, *args, **kwargs)
+        super().__init__(session, queue, max_attempts, delay)
 
     async def _request(self, request: BaseRequest) -> bytes:
         async with self.session.request(
@@ -111,10 +108,8 @@ class FileWorker(BaseWorker):
             max_attempts: int,
             delay: float,
             path: AnyStr,
-            *args: Any,
-            **kwargs: Any,
     ) -> None:
-        super().__init__(session, queue, max_attempts, delay, *args, **kwargs)
+        super().__init__(session, queue, max_attempts, delay)
         self.path = path
 
     async def _request(self, request: BaseFileRequest) -> None:

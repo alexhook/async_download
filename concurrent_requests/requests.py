@@ -22,7 +22,6 @@ class BaseRequest(ABC):
     def __init__(
             self,
             url: StrOrURL,
-            *,
             data: Any = None,
             params: Optional[StrOrURL] = None,
             headers: Optional[LooseHeaders] = None,
@@ -75,7 +74,7 @@ class POST(BaseRequest):
 
     __method__ = METH_POST
 
-    def __init__(self, url: StrOrURL, *, data: Any = None, **kwargs: Any):
+    def __init__(self, url: StrOrURL, data: Any = None, **kwargs: Any):
         super().__init__(url, data=data, **kwargs)
 
 
@@ -84,7 +83,7 @@ class PUT(BaseRequest):
 
     __method__ = METH_PUT
 
-    def __init__(self, url: StrOrURL, *, data: Any = None, **kwargs: Any):
+    def __init__(self, url: StrOrURL, data: Any = None, **kwargs: Any):
         super().__init__(url, data=data, **kwargs)
 
 
@@ -93,7 +92,7 @@ class PATCH(BaseRequest):
 
     __method__ = METH_PATCH
 
-    def __init__(self, url: StrOrURL, *, data: Any = None, **kwargs: Any):
+    def __init__(self, url: StrOrURL, data: Any = None, **kwargs: Any):
         super().__init__(url, data=data, **kwargs)
 
 
@@ -135,6 +134,6 @@ class FileGET(BaseFileRequest, GET):
 class FilePOST(BaseFileRequest, POST):
     __slots__ = ()
 
-    def __init__(self, url: StrOrURL, file_name: str, *, data: Any = None, **kwargs: Any):
+    def __init__(self, url: StrOrURL, file_name: str, data: Any = None, **kwargs: Any):
         super().__init__(url, data=data, **kwargs)
         self.file_name = file_name

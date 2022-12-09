@@ -25,7 +25,6 @@ class ConcurrentRequests:
             self,
             session: ClientSession,
             requests: List[BaseRequest],
-            *,
             worker: Type[BaseWorker] = MemoryWorker,
             workers_count: int = 5,
             max_attempts: int = 5,
